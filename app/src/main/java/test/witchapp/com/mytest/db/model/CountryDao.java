@@ -3,19 +3,19 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
-
 /**
  * Created by z.ahmadi on 4/21/2018.
  */
-@Table(name = CountryDao.Country_Table,id = CountryDao.Id_Column)
-public class CountryDao extends Model {
+@Table(name = CountryDao.Country_Table)
+public class CountryDao extends Model implements Cloneable
+{
     public static final String Country_Table = "Country";
     public static final String iso_Column = "iso";
-    public static final String Id_Column = "Id";
     public static final String name_Column = "name";
     public static final String phone_Column = "phone";
-    @Column(name = Id_Column)
-    public Integer Id;
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
     @Expose
     @Column(name = iso_Column)
     public String iso;

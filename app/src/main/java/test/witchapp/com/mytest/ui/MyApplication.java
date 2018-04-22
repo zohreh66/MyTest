@@ -9,7 +9,6 @@ import com.activeandroid.Configuration;
 import java.io.File;
 import test.witchapp.com.mytest.db.model.CountryDao;
 public class MyApplication extends Application {
-    // database
     private static int DatabaseVersion = 1;
     public static String DEFAULT_PATH = Environment.getExternalStorageDirectory() + "/MyTest";
     public static String DEFAULT_DATABASE_FILE = "Test.db";

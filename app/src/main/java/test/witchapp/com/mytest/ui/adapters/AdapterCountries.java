@@ -1,5 +1,6 @@
 package test.witchapp.com.mytest.ui.adapters;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class AdapterCountries extends RecyclerView.Adapter<RecyclerView.ViewHold
     public List<CountryDao> data=new ArrayList<>();
     public final int FOOTER_VIEW=1;
     public final int Header_VIEW=2;
-    public final int Data_VIEW=2;
+    public final int Data_VIEW=3;
     public Context context;
     public void clear() {
         data.clear();
@@ -53,13 +54,16 @@ public class AdapterCountries extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder hvh = (HeaderViewHolder) holder;
             hvh.txtHeader.setText(context.getString(R.string.header_section));
+            hvh.txtHeader.setTextColor(Color.RED);
         }else if (holder instanceof FooterViewHolder) {
             FooterViewHolder hvh = (FooterViewHolder) holder;
             hvh.txtFooter.setText(context.getString(R.string.footer_section));
+            hvh.txtFooter.setTextColor(Color.RED);
         }
         else {
             DataViewHolder hvh = (DataViewHolder) holder;
             hvh.txtName.setText(data.get(position).name);
+            hvh.txtName.setTextColor(Color.BLACK);
         }
     }
 
@@ -70,7 +74,7 @@ public class AdapterCountries extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if (position == data.size()) {
+        if (position == data.size()-1) {
             return FOOTER_VIEW;
         }
         else if(position==0){

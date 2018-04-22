@@ -2,7 +2,6 @@ package test.witchapp.com.mytest.ui.activites;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import test.witchapp.com.mytest.R;
 import test.witchapp.com.mytest.ui.fragments.FragmentLoadData;
 import test.witchapp.com.mytest.ui.fragments.FragmentLoadData_;
@@ -21,5 +20,11 @@ public class MainActivity extends AppCompatActivity
             ft.addToBackStack(FragmentLoadData.class.getName());
             ft.commit();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

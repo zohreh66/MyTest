@@ -2,6 +2,8 @@ package test.witchapp.com.mytest.ui.fragments;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -11,18 +13,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import test.witchapp.com.mytest.R;
+import test.witchapp.com.mytest.db.Biz.CountryBiz;
 import test.witchapp.com.mytest.db.model.CountryDao;
 import test.witchapp.com.mytest.holds.Urls;
 import test.witchapp.com.mytest.interfaces.CountryApi;
 import test.witchapp.com.mytest.serverutils.ServiceGenerator;
 import test.witchapp.com.mytest.ui.adapters.AdapterCountries;
 import test.witchapp.com.mytest.utils.AsyncLoadData;
-
 /**
  * Created by z.ahmadi on 4/21/2018.
  */
 @EFragment(R.layout.fragment_load_data)
 public class FragmentLoadData extends Fragment {
+    @ViewById(R.id.progressBar)
+    protected ProgressBar progressBar;
     @ViewById(R.id.recycler)
     protected RecyclerView mRecyclerView;
     public    AdapterCountries adapterCountries;
@@ -50,10 +54,12 @@ public class FragmentLoadData extends Fragment {
                         return  lis;
                     }
                     @Override
-                    public void onPreExecute() {}
+                    public void onPreExecute() {progressBar.setVisibility(View.VISIBLE);}
                     @Override
                     public void onPostExecute(Object o) {
-
+                        progressBar.setVisibility(View.GONE);
+                        adapterCountries.addItems((List<CountryDao>) o);
+                        adapterCountries.notifyDataSetChanged();
                     }
                 });
                 asyncLoadData.execute();
@@ -72,6 +78,29 @@ public class FragmentLoadData extends Fragment {
         }
     }
 
+    public void loadLocalData() {
+        AsyncLoadData  asyncLoadData=AsyncLoadData.newInstance(new AsyncLoadData.doInBackground() {
+            @Override
+            public Object ondoInBackground() {
+                return CountryBiz.getAllData();
+            }
+            @Override
+            public void onPreExecute() {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void onPostExecute(Object o) {
+                progressBar.setVisibility(View.GONE);
+                adapterCountries.addItems((List<CountryDao>)o);
+                adapterCountries.notifyDataSetChanged();
+                if(adapterCountries.getItemCount()==0){
+                   loadData();
+                }
+            }
+        });
+        asyncLoadData.execute();
+    }
+
     @AfterViews
     public void after() {
         adapterCountries=new AdapterCountries(getActivity());
@@ -83,7 +112,7 @@ public class FragmentLoadData extends Fragment {
             adapterCountries.addItems(list);
             adapterCountries.notifyDataSetChanged();
         } else {
-            loadData();
+            loadLocalData();
         }
     }
 }

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MyTest</string>
+    <string name="header_section">Header Section</string>
+    <string name="footer_section">Footer Section</string>
+</resources>
